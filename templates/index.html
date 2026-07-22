@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>租房位置决策</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="layout">
+    <section class="panel form-panel">
+      <div class="eyebrow">泛数据分析应用</div>
+      <h1>租房位置决策</h1>
+      <p class="intro">先用预算和通勤时间筛掉明显不合适的房源，再根据你的侧重和定性判断给出看房顺序，不使用百分制总分。</p>
+
+      <label>工作地点
+        <input id="workplace" value="上海市人民广场" autocomplete="street-address" />
+      </label>
+
+      <div class="grid-2">
+        <label>月租预算上限（元）
+          <input id="budget" type="number" value="5000" min="1" />
+        </label>
+        <label>可接受驾车通勤（分钟）
+          <input id="maxCommute" type="number" value="45" min="1" />
+        </label>
+      </div>
+
+      <div class="section-title">你的决策侧重</div>
+      <label class="select-label">选择最接近你真实想法的一项
+        <select id="priority">
+          <option value="balanced">预算与通勤均衡</option>
+          <option value="commute">通勤优先</option>
+          <option value="cost">租金优先</option>
+          <option value="living">居住体验优先</option>
+        </select>
+      </label>
+      <p class="hint">这里表达的是先后顺序，不要求你给每项打分。</p>
+
+      <div class="section-header">
+        <div class="section-title">候选房源</div>
+        <button class="secondary" id="addOption" type="button">新增房源</button>
+      </div>
+      <div id="options"></div>
+
+      <button class="primary" id="analyze" type="button">开始分析</button>
+      <p id="status" class="status" role="status"></p>
+    </section>
+
+    <section class="panel result-panel">
+      <div id="map"></div>
+      <div id="summary" class="summary empty">提交候选房源后，这里会显示建议和看房顺序。</div>
+      <div id="methodNote" class="method-note"></div>
+      <div id="results" class="results"></div>
+    </section>
+  </main>
+
+  <template id="optionTemplate">
+    <div class="option-card">
+      <div class="option-top">
+        <strong>候选房源</strong>
+        <button class="remove" type="button">删除</button>
+      </div>
+      <input class="name" placeholder="名称，例如：一号房" />
+      <input class="address" placeholder="详细地址，最好包含城市和区县" />
+      <label>月租（元）
+        <input class="rent" type="number" min="1" />
+      </label>
+      <div class="grid-2">
+        <label class="select-label">居住环境印象
+          <select class="environment">
+            <option value="verify">还需实地核实</option>
+            <option value="satisfied">比较满意</option>
+            <option value="acceptable">可以接受</option>
+          </select>
+        </label>
+        <label class="select-label">生活配套印象
+          <select class="amenities">
+            <option value="verify">还需实地核实</option>
+            <option value="convenient">比较便利</option>
+            <option value="average">基本够用</option>
+            <option value="inconvenient">不太便利</option>
+          </select>
+        </label>
+      </div>
+      <label>备注（可选）
+        <input class="notes" placeholder="例如：临街、无电梯、距地铁口约 800 米" />
+      </label>
+    </div>
+  </template>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
